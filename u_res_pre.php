@@ -2,8 +2,13 @@
 
 require $_SERVER['DOCUMENT_ROOT'] . '/php/app.php';
 
-if (isset($_POST['c'])) {
-
+if (
+    array_key_exists('c', $_POST)
+    && isset($_POST['c'])
+    && !empty($_POST['c'])
+    && $_POST['c'] !== null
+    && $_POST['c'] !== ''
+) {
     /* check if cookie q with the encoded random number,
     previously set while on recovery page, exists */
     if (cset('q')) {
@@ -25,8 +30,11 @@ if (isset($_POST['c'])) {
                 $sv,
                 $un,
                 $pw,
-                $db, $sel = 'ulog',
-                $tn, $whr = 'ulog', $val = $hurl
+                $db,
+                $sel = 'ulog',
+                $tn,
+                $whr = 'ulog',
+                $val = $hurl
             );
 
             if ($umatch) {
@@ -35,13 +43,14 @@ if (isset($_POST['c'])) {
                 $conn = mysqli_connect($sv, $un, $pw, $db);
                 if (mysqli_connect_errno()) {
                     $ms = 'ERROR: No conn to db "' . $db
-                    . '"-' . mysqli_connect_error();
+                        . '"-' . mysqli_connect_error();
                     goto end;
                 } else {
                     // get unix from db row where ulog w hashed link from em
                     $res = mysqli_query(
-                        $conn, "SELECT unix FROM "
-                        . $tn . " WHERE ulog='" . $hurl . "'"
+                        $conn,
+                        "SELECT unix FROM "
+                            . $tn . " WHERE ulog='" . $hurl . "'"
                     );
                     $row = mysqli_fetch_array($res, MYSQLI_ASSOC);
                     $uunix = $row['unix'];
