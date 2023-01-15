@@ -2,7 +2,13 @@
 
 require $_SERVER['DOCUMENT_ROOT'] . '/php/app.php';
 
-if (isset($_POST['pass'])) {
+if (
+    array_key_exists('pass', $_POST)
+    && isset($_POST['pass'])
+    && !empty($_POST['pass'])
+    && $_POST['pass'] !== null
+    && $_POST['pass'] !== ''
+) {
     /* check if cookie q with the encoded random number,
     previously set while on recovery page, exists */
     if (cset('q')) {
@@ -24,8 +30,11 @@ if (isset($_POST['pass'])) {
                 $sv,
                 $un,
                 $pw,
-                $db, $sel = 'ulog',
-                $tn, $whr = 'ulog', $val = $hurl
+                $db,
+                $sel = 'ulog',
+                $tn,
+                $whr = 'ulog',
+                $val = $hurl
             );
 
             if ($umatch) {
@@ -34,7 +43,7 @@ if (isset($_POST['pass'])) {
                 $conn = mysqli_connect($sv, $un, $pw, $db);
                 if (mysqli_connect_errno()) {
                     $ms = 'ERROR: No conn to db "' . $db
-                    . '"-' . mysqli_connect_error();
+                        . '"-' . mysqli_connect_error();
                     goto end;
                 } else {
                     /* clean, special, encode & hash the pass from input sent
@@ -46,20 +55,23 @@ if (isset($_POST['pass'])) {
 
                     // update unix db column with actual unix
                     mysqli_query(
-                        $conn, "UPDATE " . $tn . " SET unix='"
-                        . $nt . "' WHERE ulog ='" . $hurl . "'"
+                        $conn,
+                        "UPDATE " . $tn . " SET unix='"
+                            . $nt . "' WHERE ulog ='" . $hurl . "'"
                     );
 
                     // update password in row where ulog mathes h from url
                     mysqli_query(
-                        $conn, "UPDATE " . $tn . " SET password='"
-                        . $pass . "' WHERE ulog ='" . $hurl . "'"
+                        $conn,
+                        "UPDATE " . $tn . " SET password='"
+                            . $pass . "' WHERE ulog ='" . $hurl . "'"
                     );
 
                     // reset/empty ulog column where ulog is the h from url
                     mysqli_query(
-                        $conn, "UPDATE " . $tn
-                        . " SET ulog='' WHERE ulog ='" . $hurl . "'"
+                        $conn,
+                        "UPDATE " . $tn
+                            . " SET ulog='' WHERE ulog ='" . $hurl . "'"
                     );
                 }
 
