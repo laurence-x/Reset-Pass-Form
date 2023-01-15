@@ -84,18 +84,15 @@ if ($dm === $sv) {
     $un = "root";
     $pw = "";
 } else {
-    $un = "user_name"; //! fill out
-    $pw = "password"; //! fill out
-
+    $un = "uiczvggi_Admin";
+    $pw = "9acNWU8W8w8hnX9";
 }
 
 //~ User
 if ($dm === $sv) {
-    $db = "users"; //! fill out
-
+    $db = "users";
 } else {
-    $db = "db_name"; //! fill out
-
+    $db = "uiczvggi_Users";
 }
 $tn = "users"; // table to work with
 
