@@ -84,8 +84,8 @@ if ($dm === $sv) {
     $un = "root";
     $pw = "";
 } else {
-    $un = "uiczvggi_Admin";
-    $pw = "9acNWU8W8w8hnX9";
+    $un = "USERNAME";
+    $pw = "PASSWORD";
 }
 
 //~ User
